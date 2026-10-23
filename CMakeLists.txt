@@ -17,8 +17,8 @@ set(SRCS
 
 add_library(ortki ${SRCS})
 
-#add_compile_definitions(ONNX_ML=1)
-#add_compile_definitions(ONNX_NAMESPACE=onnx)
+add_compile_definitions(ONNX_ML=1)
+add_compile_definitions(ONNX_NAMESPACE=onnx)
 
 set(onnxruntime_DISABLE_RTTI OFF)
 set(onnxruntime_BUILD_UNIT_TESTS OFF)

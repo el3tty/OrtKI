@@ -29,6 +29,16 @@ ONNX_ML = False
 
 ext = '.cpp'
 
+# Highest schema version generated per domain, so newer onnx packages reproduce the same API.
+# The default domain matches DEFAULT_OPSET (include/common.h), the opset ortki executes nodes at.
+# Domains not listed here (e.g. ai.onnx.preview) are skipped.
+# Generate with the onnx version bundled in the linked onnxruntime (onnx 1.21.0 for onnxruntime 1.27).
+MAX_OPSET = {
+    '': 21,
+    'ai.onnx.ml': 4,
+    'ai.onnx.preview.training': 1,
+}
+
 
 def display_schema(schema, versions, target):  # type: (OpSchema, Sequence[OpSchema], type) -> Text
 
@@ -39,6 +49,8 @@ def operator_schemas():
     # domain -> support level -> name -> [schema]
     index = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))  # type: Dict[Text, Dict[int, Dict[Text, List[OpSchema]]]]
     for schema in defs.get_all_schemas_with_history():
+        if schema.since_version > MAX_OPSET.get(schema.domain, 0):
+            continue
         index[schema.domain][int(schema.support_level)][schema.name].append(schema)
 
     # Preprocess the Operator Schemas

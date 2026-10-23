@@ -40,7 +40,7 @@ ORTKI_API(ortki::OrtKITensor *) ortki_CumSum(ortki::OrtKITensor * x, ortki::OrtK
 ORTKI_API(ortki::OrtKITensor *) ortki_DFT(ortki::OrtKITensor * input, ortki::OrtKITensor * dft_length, ortki::OrtKITensor * axis, int64_t inverse, int64_t onesided);
 ORTKI_API(ortki::OrtKITensor *) ortki_DeformConv(ortki::OrtKITensor * X, ortki::OrtKITensor * W, ortki::OrtKITensor * offset, ortki::OrtKITensor * B, ortki::OrtKITensor * mask, int64_t* dilations, size_t dilations_size, int64_t group, int64_t* kernel_shape, size_t kernel_shape_size, int64_t offset_group, int64_t* pads, size_t pads_size, int64_t* strides, size_t strides_size);
 ORTKI_API(ortki::OrtKITensor *) ortki_DepthToSpace(ortki::OrtKITensor * input, int64_t blocksize, const char* mode);
-ORTKI_API(ortki::OrtKITensor *) ortki_DequantizeLinear(ortki::OrtKITensor * x, ortki::OrtKITensor * x_scale, ortki::OrtKITensor * x_zero_point, int64_t axis);
+ORTKI_API(ortki::OrtKITensor *) ortki_DequantizeLinear(ortki::OrtKITensor * x, ortki::OrtKITensor * x_scale, ortki::OrtKITensor * x_zero_point, int64_t axis, int64_t block_size);
 ORTKI_API(ortki::OrtKITensor *) ortki_Det(ortki::OrtKITensor * X);
 ORTKI_API(ortki::OrtKITensor *) ortki_Div(ortki::OrtKITensor * A, ortki::OrtKITensor * B);
 ORTKI_API(ortki::OrtKITensorSeq *) ortki_Dropout(ortki::OrtKITensor * data, ortki::OrtKITensor * ratio, ortki::OrtKITensor * training_mode, int64_t seed);
@@ -66,7 +66,7 @@ ORTKI_API(ortki::OrtKITensor *) ortki_GlobalMaxPool(ortki::OrtKITensor * X);
 ORTKI_API(ortki::OrtKITensor *) ortki_Greater(ortki::OrtKITensor * A, ortki::OrtKITensor * B);
 ORTKI_API(ortki::OrtKITensor *) ortki_GreaterOrEqual(ortki::OrtKITensor * A, ortki::OrtKITensor * B);
 ORTKI_API(ortki::OrtKITensor *) ortki_GridSample(ortki::OrtKITensor * X, ortki::OrtKITensor * grid, int64_t align_corners, const char* mode, const char* padding_mode);
-ORTKI_API(ortki::OrtKITensor *) ortki_GroupNormalization(ortki::OrtKITensor * X, ortki::OrtKITensor * scale, ortki::OrtKITensor * bias, float epsilon, int64_t num_groups);
+ORTKI_API(ortki::OrtKITensor *) ortki_GroupNormalization(ortki::OrtKITensor * X, ortki::OrtKITensor * scale, ortki::OrtKITensor * bias, float epsilon, int64_t num_groups, int64_t stash_type);
 ORTKI_API(ortki::OrtKITensor *) ortki_HammingWindow(ortki::OrtKITensor * size, int64_t output_datatype, int64_t periodic);
 ORTKI_API(ortki::OrtKITensor *) ortki_HannWindow(ortki::OrtKITensor * size, int64_t output_datatype, int64_t periodic);
 ORTKI_API(ortki::OrtKITensor *) ortki_HardSigmoid(ortki::OrtKITensor * X, float alpha, float beta);
@@ -114,7 +114,7 @@ ORTKI_API(ortki::OrtKITensor *) ortki_Pad(ortki::OrtKITensor * data, ortki::OrtK
 ORTKI_API(ortki::OrtKITensor *) ortki_Pow(ortki::OrtKITensor * X, ortki::OrtKITensor * Y);
 ORTKI_API(ortki::OrtKITensor *) ortki_QLinearConv(ortki::OrtKITensor * x, ortki::OrtKITensor * x_scale, ortki::OrtKITensor * x_zero_point, ortki::OrtKITensor * w, ortki::OrtKITensor * w_scale, ortki::OrtKITensor * w_zero_point, ortki::OrtKITensor * y_scale, ortki::OrtKITensor * y_zero_point, ortki::OrtKITensor * B, const char* auto_pad, int64_t* dilations, size_t dilations_size, int64_t group, int64_t* kernel_shape, size_t kernel_shape_size, int64_t* pads, size_t pads_size, int64_t* strides, size_t strides_size);
 ORTKI_API(ortki::OrtKITensor *) ortki_QLinearMatMul(ortki::OrtKITensor * a, ortki::OrtKITensor * a_scale, ortki::OrtKITensor * a_zero_point, ortki::OrtKITensor * b, ortki::OrtKITensor * b_scale, ortki::OrtKITensor * b_zero_point, ortki::OrtKITensor * y_scale, ortki::OrtKITensor * y_zero_point);
-ORTKI_API(ortki::OrtKITensor *) ortki_QuantizeLinear(ortki::OrtKITensor * x, ortki::OrtKITensor * y_scale, ortki::OrtKITensor * y_zero_point, int64_t axis, int64_t saturate);
+ORTKI_API(ortki::OrtKITensor *) ortki_QuantizeLinear(ortki::OrtKITensor * x, ortki::OrtKITensor * y_scale, ortki::OrtKITensor * y_zero_point, int64_t axis, int64_t block_size, int64_t output_dtype, int64_t saturate);
 ORTKI_API(ortki::OrtKITensorSeq *) ortki_RNN(ortki::OrtKITensor * X, ortki::OrtKITensor * W, ortki::OrtKITensor * R, ortki::OrtKITensor * B, ortki::OrtKITensor * sequence_lens, ortki::OrtKITensor * initial_h, float* activation_alpha, size_t activation_alpha_size, float* activation_beta, size_t activation_beta_size, const char** activations, size_t activations_size, float clip, const char* direction, int64_t hidden_size, int64_t layout);
 ORTKI_API(ortki::OrtKITensor *) ortki_RandomNormal(int64_t dtype, float mean, float scale, float seed, int64_t* shape, size_t shape_size);
 ORTKI_API(ortki::OrtKITensor *) ortki_RandomNormalLike(ortki::OrtKITensor * input, int64_t dtype, float mean, float scale, float seed);

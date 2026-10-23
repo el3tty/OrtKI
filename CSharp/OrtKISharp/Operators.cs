@@ -81,7 +81,7 @@ internal partial class Native
     public static extern Tensor ortki_CenterCropPad(Tensor input_data, Tensor shape, long[] axes, nuint axes_size);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_Clip(Tensor input, Tensor min, Tensor max);
+    public static extern Tensor ortki_Clip(Tensor input, IntPtr min, IntPtr max);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Col2Im(Tensor input, Tensor image_shape, Tensor block_shape, long[] dilations, nuint dilations_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
@@ -96,13 +96,13 @@ internal partial class Native
     public static extern Tensor ortki_ConcatFromSequence(IntPtr[] input_sequence, nuint input_size, long axis, long new_axis);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_Conv(Tensor X, Tensor W, Tensor B, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
+    public static extern Tensor ortki_Conv(Tensor X, Tensor W, IntPtr B, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ConvInteger(Tensor x, Tensor w, Tensor x_zero_point, Tensor w_zero_point, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
+    public static extern Tensor ortki_ConvInteger(Tensor x, Tensor w, IntPtr x_zero_point, IntPtr w_zero_point, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ConvTranspose(Tensor X, Tensor W, Tensor B, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] output_padding, nuint output_padding_size, long[] output_shape, nuint output_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
+    public static extern Tensor ortki_ConvTranspose(Tensor X, Tensor W, IntPtr B, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] output_padding, nuint output_padding_size, long[] output_shape, nuint output_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Cos(Tensor input);
@@ -114,16 +114,16 @@ internal partial class Native
     public static extern Tensor ortki_CumSum(Tensor x, Tensor axis, long exclusive, long reverse);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_DFT(Tensor input, Tensor dft_length, Tensor axis, long inverse, long onesided);
+    public static extern Tensor ortki_DFT(Tensor input, IntPtr dft_length, IntPtr axis, long inverse, long onesided);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_DeformConv(Tensor X, Tensor W, Tensor offset, Tensor B, Tensor mask, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long offset_group, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
+    public static extern Tensor ortki_DeformConv(Tensor X, Tensor W, Tensor offset, IntPtr B, IntPtr mask, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long offset_group, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_DepthToSpace(Tensor input, long blocksize, string mode);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_DequantizeLinear(Tensor x, Tensor x_scale, Tensor x_zero_point, long axis);
+    public static extern Tensor ortki_DequantizeLinear(Tensor x, Tensor x_scale, IntPtr x_zero_point, long axis, long block_size);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Det(Tensor X);
@@ -132,7 +132,7 @@ internal partial class Native
     public static extern Tensor ortki_Div(Tensor A, Tensor B);
 
     [DllImport(LibraryName)]
-    public static extern TensorSeq ortki_Dropout(Tensor data, Tensor ratio, Tensor training_mode, long seed);
+    public static extern TensorSeq ortki_Dropout(Tensor data, IntPtr ratio, IntPtr training_mode, long seed);
 
     [DllImport(LibraryName)]
     public static extern TensorSeq ortki_DynamicQuantizeLinear(Tensor x);
@@ -165,7 +165,7 @@ internal partial class Native
     public static extern Tensor ortki_Floor(Tensor X);
 
     [DllImport(LibraryName)]
-    public static extern TensorSeq ortki_GRU(Tensor X, Tensor W, Tensor R, Tensor B, Tensor sequence_lens, Tensor initial_h, float[] activation_alpha, nuint activation_alpha_size, float[] activation_beta, nuint activation_beta_size, string[] activations, nuint activations_size, float clip, string direction, long hidden_size, long layout, long linear_before_reset);
+    public static extern TensorSeq ortki_GRU(Tensor X, Tensor W, Tensor R, IntPtr B, IntPtr sequence_lens, IntPtr initial_h, float[] activation_alpha, nuint activation_alpha_size, float[] activation_beta, nuint activation_beta_size, string[] activations, nuint activations_size, float clip, string direction, long hidden_size, long layout, long linear_before_reset);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Gather(Tensor data, Tensor indices, long axis);
@@ -180,7 +180,7 @@ internal partial class Native
     public static extern Tensor ortki_Gelu(Tensor X, string approximate);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_Gemm(Tensor A, Tensor B, Tensor C, float alpha, float beta, long transA, long transB);
+    public static extern Tensor ortki_Gemm(Tensor A, Tensor B, IntPtr C, float alpha, float beta, long transA, long transB);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_GlobalAveragePool(Tensor X);
@@ -201,7 +201,7 @@ internal partial class Native
     public static extern Tensor ortki_GridSample(Tensor X, Tensor grid, long align_corners, string mode, string padding_mode);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_GroupNormalization(Tensor X, Tensor scale, Tensor bias, float epsilon, long num_groups);
+    public static extern Tensor ortki_GroupNormalization(Tensor X, Tensor scale, Tensor bias, float epsilon, long num_groups, long stash_type);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_HammingWindow(Tensor size, long output_datatype, long periodic);
@@ -237,7 +237,7 @@ internal partial class Native
     public static extern Tensor ortki_LRN(Tensor X, float alpha, float beta, float bias, long size);
 
     [DllImport(LibraryName)]
-    public static extern TensorSeq ortki_LayerNormalization(Tensor X, Tensor Scale, Tensor B, long axis, float epsilon, long stash_type);
+    public static extern TensorSeq ortki_LayerNormalization(Tensor X, Tensor Scale, IntPtr B, long axis, float epsilon, long stash_type);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_LeakyRelu(Tensor X, float alpha);
@@ -264,7 +264,7 @@ internal partial class Native
     public static extern Tensor ortki_MatMul(Tensor A, Tensor B);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_MatMulInteger(Tensor A, Tensor B, Tensor a_zero_point, Tensor b_zero_point);
+    public static extern Tensor ortki_MatMulInteger(Tensor A, Tensor B, IntPtr a_zero_point, IntPtr b_zero_point);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Max(IntPtr[] data_0, nuint input_size);
@@ -276,7 +276,7 @@ internal partial class Native
     public static extern Tensor ortki_MaxRoiPool(Tensor X, Tensor rois, long[] pooled_shape, nuint pooled_shape_size, float spatial_scale);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_MaxUnpool(Tensor X, Tensor I, Tensor output_shape, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
+    public static extern Tensor ortki_MaxUnpool(Tensor X, Tensor I, IntPtr output_shape, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Mean(IntPtr[] data_0, nuint input_size);
@@ -306,10 +306,10 @@ internal partial class Native
     public static extern Tensor ortki_Neg(Tensor X);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_NegativeLogLikelihoodLoss(Tensor input, Tensor target, Tensor weight, long ignore_index, string reduction);
+    public static extern Tensor ortki_NegativeLogLikelihoodLoss(Tensor input, Tensor target, IntPtr weight, long ignore_index, string reduction);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_NonMaxSuppression(Tensor boxes, Tensor scores, Tensor max_output_boxes_per_class, Tensor iou_threshold, Tensor score_threshold, long center_point_box);
+    public static extern Tensor ortki_NonMaxSuppression(Tensor boxes, Tensor scores, IntPtr max_output_boxes_per_class, IntPtr iou_threshold, IntPtr score_threshold, long center_point_box);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_NonZero(Tensor X);
@@ -324,7 +324,7 @@ internal partial class Native
     public static extern Tensor ortki_OptionalGetElement(Tensor input);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_OptionalHasElement(Tensor input);
+    public static extern Tensor ortki_OptionalHasElement(IntPtr input);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Or(Tensor A, Tensor B);
@@ -333,22 +333,22 @@ internal partial class Native
     public static extern Tensor ortki_PRelu(Tensor X, Tensor slope);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_Pad(Tensor data, Tensor pads, Tensor constant_value, Tensor axes, string mode);
+    public static extern Tensor ortki_Pad(Tensor data, Tensor pads, IntPtr constant_value, IntPtr axes, string mode);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Pow(Tensor X, Tensor Y);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_QLinearConv(Tensor x, Tensor x_scale, Tensor x_zero_point, Tensor w, Tensor w_scale, Tensor w_zero_point, Tensor y_scale, Tensor y_zero_point, Tensor B, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
+    public static extern Tensor ortki_QLinearConv(Tensor x, Tensor x_scale, Tensor x_zero_point, Tensor w, Tensor w_scale, Tensor w_zero_point, Tensor y_scale, Tensor y_zero_point, IntPtr B, string auto_pad, long[] dilations, nuint dilations_size, long group, long[] kernel_shape, nuint kernel_shape_size, long[] pads, nuint pads_size, long[] strides, nuint strides_size);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_QLinearMatMul(Tensor a, Tensor a_scale, Tensor a_zero_point, Tensor b, Tensor b_scale, Tensor b_zero_point, Tensor y_scale, Tensor y_zero_point);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_QuantizeLinear(Tensor x, Tensor y_scale, Tensor y_zero_point, long axis, long saturate);
+    public static extern Tensor ortki_QuantizeLinear(Tensor x, Tensor y_scale, IntPtr y_zero_point, long axis, long block_size, long output_dtype, long saturate);
 
     [DllImport(LibraryName)]
-    public static extern TensorSeq ortki_RNN(Tensor X, Tensor W, Tensor R, Tensor B, Tensor sequence_lens, Tensor initial_h, float[] activation_alpha, nuint activation_alpha_size, float[] activation_beta, nuint activation_beta_size, string[] activations, nuint activations_size, float clip, string direction, long hidden_size, long layout);
+    public static extern TensorSeq ortki_RNN(Tensor X, Tensor W, Tensor R, IntPtr B, IntPtr sequence_lens, IntPtr initial_h, float[] activation_alpha, nuint activation_alpha_size, float[] activation_beta, nuint activation_beta_size, string[] activations, nuint activations_size, float clip, string direction, long hidden_size, long layout);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_RandomNormal(long dtype, float mean, float scale, float seed, long[] shape, nuint shape_size);
@@ -369,34 +369,34 @@ internal partial class Native
     public static extern Tensor ortki_Reciprocal(Tensor X);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceL1(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceL1(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceL2(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceL2(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceLogSum(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceLogSum(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceLogSumExp(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceLogSumExp(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceMax(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceMax(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceMean(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceMean(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceMin(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceMin(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceProd(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceProd(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceSum(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceSum(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_ReduceSumSquare(Tensor data, Tensor axes, long keepdims, long noop_with_empty_axes);
+    public static extern Tensor ortki_ReduceSumSquare(Tensor data, IntPtr axes, long keepdims, long noop_with_empty_axes);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_RegexFullMatch(Tensor X, string pattern);
@@ -417,7 +417,7 @@ internal partial class Native
     public static extern Tensor ortki_Round(Tensor X);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_STFT(Tensor signal, Tensor frame_step, Tensor window, Tensor frame_length, long onesided);
+    public static extern Tensor ortki_STFT(Tensor signal, Tensor frame_step, IntPtr window, IntPtr frame_length, long onesided);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Scatter(Tensor data, Tensor indices, Tensor updates, long axis);
@@ -441,10 +441,10 @@ internal partial class Native
     public static extern Tensor ortki_SequenceEmpty(long dtype);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_SequenceErase(IntPtr[] input_sequence, nuint input_size, Tensor position);
+    public static extern Tensor ortki_SequenceErase(IntPtr[] input_sequence, nuint input_size, IntPtr position);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_SequenceInsert(IntPtr[] input_sequence, nuint input_size, Tensor tensor, Tensor position);
+    public static extern Tensor ortki_SequenceInsert(IntPtr[] input_sequence, nuint input_size, Tensor tensor, IntPtr position);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_SequenceLength(IntPtr[] input_sequence, nuint input_size);
@@ -471,13 +471,13 @@ internal partial class Native
     public static extern Tensor ortki_Size(Tensor data);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_Slice(Tensor data, Tensor starts, Tensor ends, Tensor axes, Tensor steps);
+    public static extern Tensor ortki_Slice(Tensor data, Tensor starts, Tensor ends, IntPtr axes, IntPtr steps);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Softmax(Tensor input, long axis);
 
     [DllImport(LibraryName)]
-    public static extern TensorSeq ortki_SoftmaxCrossEntropyLoss(Tensor scores, Tensor labels, Tensor weights, long ignore_index, string reduction);
+    public static extern TensorSeq ortki_SoftmaxCrossEntropyLoss(Tensor scores, Tensor labels, IntPtr weights, long ignore_index, string reduction);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Softplus(Tensor X);
@@ -489,13 +489,13 @@ internal partial class Native
     public static extern Tensor ortki_SpaceToDepth(Tensor input, long blocksize);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_SplitToSequence(Tensor input, Tensor split, long axis, long keepdims);
+    public static extern Tensor ortki_SplitToSequence(Tensor input, IntPtr split, long axis, long keepdims);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_Sqrt(Tensor X);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_Squeeze(Tensor data, Tensor axes);
+    public static extern Tensor ortki_Squeeze(Tensor data, IntPtr axes);
 
     [DllImport(LibraryName)]
     public static extern Tensor ortki_StringConcat(Tensor X, Tensor Y);
@@ -534,7 +534,7 @@ internal partial class Native
     public static extern Tensor ortki_Transpose(Tensor data, long[] perm, nuint perm_size);
 
     [DllImport(LibraryName)]
-    public static extern Tensor ortki_Trilu(Tensor input, Tensor k, long upper);
+    public static extern Tensor ortki_Trilu(Tensor input, IntPtr k, long upper);
 
     [DllImport(LibraryName)]
     public static extern TensorSeq ortki_Unique(Tensor X, long axis, long sorted);

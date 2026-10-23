@@ -9,15 +9,15 @@
 
 using namespace ::onnxruntime::logging;
 
-OrtEnv *make_ort_env()
+OrtEnvPtr make_ort_env()
 {
     OrtThreadingOptions tpo;
     OrtEnv::LoggingManagerConstructionInfo lm_info{nullptr, nullptr, ORT_LOGGING_LEVEL_WARNING, "Default"};
     onnxruntime::Status status;
-    return OrtEnv::GetInstance(lm_info, status, &tpo);
+    return OrtEnv::GetOrCreateInstance(lm_info, status, &tpo);
 }
 
-OrtEnv *ort_env = make_ort_env();
+OrtEnvPtr ort_env = make_ort_env();
 namespace ortki
 {
     static std::unique_ptr<::onnxruntime::logging::LoggingManager> s_default_logging_manager;
