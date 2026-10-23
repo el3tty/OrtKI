@@ -11,6 +11,7 @@ ortki::OrtKITensor *make_tensor(const std::vector<T> &value, const std::vector<i
 }
 
 ortki::OrtKITensorSeq *ortki_Split(ortki::OrtKITensor *input, ortki::OrtKITensor *split, int64_t axis) {
+    ORTKI_TRY
     ortki::OpExecutor Split("Split");
     Split.AddInput("input", input);
     Split.AddInput("split", split);
@@ -19,12 +20,14 @@ ortki::OrtKITensorSeq *ortki_Split(ortki::OrtKITensor *input, ortki::OrtKITensor
     Split.SetOutputSize(split->tensor().Shape()[0]);
     auto results = Split.Run();
     return new ortki::OrtKITensorSeq(results);
+    ORTKI_CATCH(nullptr)
 }
 
 ortki::OrtKITensor *ortki_ResizeWithSizes(ortki::OrtKITensor *X, ortki::OrtKITensor *roi, ortki::OrtKITensor *sizes,
                                           const char *coordinate_transformation_mode, float cubic_coeff_a,
                                           int64_t exclude_outside,
                                           float extrapolation_value, const char *mode, const char *nearest_mode) {
+    ORTKI_TRY
     ortki::OpExecutor Resize("Resize");
     Resize.AddInput("X", X);
     Resize.AddInput("roi", roi);
@@ -37,6 +40,7 @@ ortki::OrtKITensor *ortki_ResizeWithSizes(ortki::OrtKITensor *X, ortki::OrtKITen
     Resize.AddAttribute("mode", mode);
     Resize.AddAttribute("nearest_mode", nearest_mode);
     return new ortki::OrtKITensor(Resize.Run()[0]);
+    ORTKI_CATCH(nullptr)
 }
 
 
@@ -44,6 +48,7 @@ ortki::OrtKITensor *ortki_ResizeWithScales(ortki::OrtKITensor *X, ortki::OrtKITe
                                            const char *coordinate_transformation_mode, float cubic_coeff_a,
                                            int64_t exclude_outside,
                                            float extrapolation_value, const char *mode, const char *nearest_mode) {
+    ORTKI_TRY
     ortki::OpExecutor Resize("Resize");
     Resize.AddInput("X", X);
     Resize.AddInput("roi", roi);
@@ -56,11 +61,13 @@ ortki::OrtKITensor *ortki_ResizeWithScales(ortki::OrtKITensor *X, ortki::OrtKITe
     Resize.AddAttribute("mode", mode);
     Resize.AddAttribute("nearest_mode", nearest_mode);
     return new ortki::OrtKITensor(Resize.Run()[0]);
+    ORTKI_CATCH(nullptr)
 }
 
 ORTKI_API(ortki::OrtKITensor *)ortki_BatchNormalization(ortki::OrtKITensor *X, ortki::OrtKITensor *scale,
                                                         ortki::OrtKITensor *B, ortki::OrtKITensor *input_mean,
                                                         ortki::OrtKITensor *input_var, float epsilon, float momentum) {
+    ORTKI_TRY
     ortki::OpExecutor BatchNormalization("BatchNormalization");
     BatchNormalization.AddInput("X", X);
     BatchNormalization.AddInput("scale", scale);
@@ -71,14 +78,17 @@ ORTKI_API(ortki::OrtKITensor *)ortki_BatchNormalization(ortki::OrtKITensor *X, o
     BatchNormalization.AddAttribute("momentum", momentum);
     BatchNormalization.SetOutputSize(1);
     return new ortki::OrtKITensor(BatchNormalization.Run()[0]);
+    ORTKI_CATCH(nullptr)
 }
 
 ORTKI_API(ortki::OrtKITensor *)ortki_Upsample(ortki::OrtKITensor *X, ortki::OrtKITensor *scales, const char *mode) {
+    ORTKI_TRY
     ortki::OpExecutor Upsample("Upsample", 9);
     Upsample.AddInput("X", X);
     Upsample.AddInput("scales", scales);
     Upsample.AddAttribute("mode", mode);
     return new ortki::OrtKITensor(Upsample.Run()[0]);
+    ORTKI_CATCH(nullptr)
 }
 
 ORTKI_API(ortki::OrtKITensorSeq *)ortki_LSTM(ortki::OrtKITensor *X, ortki::OrtKITensor *W, ortki::OrtKITensor *R,
@@ -88,6 +98,7 @@ ORTKI_API(ortki::OrtKITensorSeq *)ortki_LSTM(ortki::OrtKITensor *X, ortki::OrtKI
                                              float *activation_beta, int activation_beta_size, const char **activations,
                                              int activations_size, float clip, const char *direction,
                                              int64_t hidden_size, int64_t input_forget, int64_t layout, bool has_clip, int64_t output_size) {
+    ORTKI_TRY
     ortki::OpExecutor LSTM("LSTM");
     LSTM.AddInput("X", X);
     LSTM.AddInput("W", W);
@@ -113,4 +124,5 @@ ORTKI_API(ortki::OrtKITensorSeq *)ortki_LSTM(ortki::OrtKITensor *X, ortki::OrtKI
     LSTM.AddAttribute("layout", layout);
     LSTM.SetOutputSize(output_size);
     return new ortki::OrtKITensorSeq(LSTM.Run());
+    ORTKI_CATCH(nullptr)
 }

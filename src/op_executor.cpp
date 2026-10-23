@@ -202,6 +202,9 @@ namespace ortki {
             session_object.Run(run_options ? *run_options : default_run_options,
                 feeds, output_names, &fetches);
 
+        if (!status.IsOK()) {
+            ORT_THROW(std::string("Run failed with status: ") + status.ErrorMessage());
+        }
 
         return fetches;
     }

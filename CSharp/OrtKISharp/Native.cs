@@ -51,4 +51,21 @@ internal partial class Native
 
     [DllImport(LibraryName)]
     public static extern Tensor tensor_seq_get_value(TensorSeq seq, nuint index);
+
+    [DllImport(LibraryName)]
+    private static extern IntPtr ortki_get_last_error();
+
+    /// <summary>
+    /// Operators return a null handle on failure; turn that into an <see cref="OrtKIException"/>.
+    /// </summary>
+    public static T CheckResult<T>(T result)
+        where T : SafeHandle
+    {
+        if (result.IsInvalid)
+        {
+            throw new OrtKIException(Marshal.PtrToStringUTF8(ortki_get_last_error()) ?? "unknown ortki error");
+        }
+
+        return result;
+    }
 }

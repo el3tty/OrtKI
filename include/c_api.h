@@ -1,10 +1,13 @@
 #pragma once
 
 #include "common.h"
+#include <exception>
 #include <string>
 
 namespace ortki
 {
+    // records the error message returned by ortki_get_last_error for the calling thread
+    void SetLastError(const char* message);
     class OrtKITensor;
     class OrtKITensorSeq;
     class OpExecutor;
@@ -111,3 +114,17 @@ ORTKI_API(void) tensor_seq_dispose(ortki::OrtKITensorSeq*);
 
 ORTKI_API(ortki::OpExecutor*) make_op_executor(const char* name);
 ORTKI_API(void) op_executor_dispose(ortki::OpExecutor* executor);
+
+// Message of the last failed operator call on this thread (operators return nullptr on failure).
+ORTKI_API(const char*) ortki_get_last_error();
+
+// Exceptions must not cross the C API, so operator bodies are wrapped in these.
+#define ORTKI_TRY try {
+#define ORTKI_CATCH(ret)                                \
+    } catch (const std::exception& e) {                 \
+        ortki::SetLastError(e.what());                  \
+        return ret;                                     \
+    } catch (...) {                                     \
+        ortki::SetLastError("unknown ortki error");     \
+        return ret;                                     \
+    }

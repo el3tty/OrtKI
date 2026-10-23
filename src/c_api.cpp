@@ -94,3 +94,15 @@ void tensor_seq_dispose(ortki::OrtKITensorSeq* seq)
 {
     delete seq;
 }
+
+static thread_local std::string last_error;
+
+void ortki::SetLastError(const char* message)
+{
+    last_error = message;
+}
+
+const char* ortki_get_last_error()
+{
+    return last_error.c_str();
+}

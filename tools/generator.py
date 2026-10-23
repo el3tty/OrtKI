@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-from attr import has
 from onnx.defs import OpSchema
 import io
 import os
@@ -103,7 +102,8 @@ class LanguageTarget:
         return list(map(f, self.schema.inputs))
 
     def map_attrs(self, f):
-        return list(map(f, self.schema.attributes.values()))
+        # sorted by name so the generated signatures don't depend on the onnx package's attribute order
+        return list(map(f, sorted(self.schema.attributes.values(), key=lambda attr: attr.name)))
 
     def has_multi_output(self) -> bool:
         # return len(self.schema.outputs) == 1 and self.schema.max_output > 1
@@ -115,6 +115,10 @@ class LanguageTarget:
 
     def is_array_attr(self, attr) -> bool:
         return str(attr.type).endswith('S')
+
+    # a single optional input may be passed as null and is then left out of the node
+    def is_optional_input(self, input) -> bool:
+        return input.option == OpSchema.FormalParameterOption.Optional and not self.is_array_input(input.name)
 
 class CAPISRC(LanguageTarget):
     def __init__(self, schema: OpSchema) -> None:
@@ -187,6 +191,11 @@ class CAPISRC(LanguageTarget):
     def add_input(self, input):
         if self.is_array_input(input.name):
             return self.add_array_input(input.name)
+        elif self.is_optional_input(input):
+            return f"""if ({input.name})
+    {self.add_single_input(input.name)}
+else
+    {self.op_name()}.AddOptionalInputEdge<float>();"""
         else:
             return self.add_single_input(input.name)
 
@@ -217,10 +226,12 @@ class CAPISRC(LanguageTarget):
                 return f"return new ortki::OrtKITensor({self.op_name()}.Run()[0]);"
 
         return "{"+ f"""
+ORTKI_TRY
 ortki::OpExecutor {self.op_name()}("{self.op_name()}");
 {add_inputs(self)}
 {add_attrs(self)}
 {compute_and_return(self)}
+ORTKI_CATCH(nullptr)
 """ + "}\n"
 
 
@@ -305,6 +316,12 @@ class CSharpDLLImport(LanguageTarget):
     def tensor_array(self) -> str:
         return "IntPtr[]"
 
+    def process_input_param(self, input):
+        # optional tensors are passed as raw handles so that null can be marshalled
+        if self.is_optional_input(input):
+            return f"IntPtr {input.name}"
+        return super().process_input_param(input)
+
     def make_decl(self) -> str:
         dll_import = '    [DllImport(LibraryName)]' + "\n" 
         decl = self.method_sign('    public static extern')
@@ -335,9 +352,16 @@ class CSharpWrapper(CSharpDLLImport):
     def method_name(self) -> str:
         return self.op_name()
 
+    def process_input_param(self, input):
+        if self.is_optional_input(input):
+            return f"{self.tensor_type()}? {input.name}"
+        return LanguageTarget.process_input_param(self, input)
+
     def process_input_args(self, input):
         if self.is_array_input(input.name):
             return f"{input.name}.Select(x => x.DangerousGetHandle()).ToArray(), (nuint){input.name}.Length"
+        elif self.is_optional_input(input):
+            return f"{input.name}?.DangerousGetHandle() ?? IntPtr.Zero"
         else:
             return f"{input.name}"
 
@@ -367,7 +391,7 @@ class CSharpWrapper(CSharpDLLImport):
             return ', '.join(inputs + attrs)
 
         def process_input_keep(input):
-            if self.is_array_input(input.name):
+            if self.is_array_input(input.name) or self.is_optional_input(input):
                 return f"        GC.KeepAlive({input.name});"
             else:
                 return ""
@@ -383,7 +407,7 @@ class CSharpWrapper(CSharpDLLImport):
             else:
                 return "_tensor"
 
-        return f"""        var _tensor = Native.{self.interface_method_name()}({method_args(self)});{keep_alives(self)}
+        return f"""        var _tensor = Native.CheckResult(Native.{self.interface_method_name()}({method_args(self)}));{keep_alives(self)}
         return {return_value(self)};"""
 
     def make_impl(self) -> str:
