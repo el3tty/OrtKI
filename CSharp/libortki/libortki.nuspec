@@ -8,18 +8,15 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">Apache</license>
     <description>ortki binary</description>
-    <dependencies>
-      <group targetFramework="netstandard2.0">
-        <dependency id="libortki-win" version="0.0.3" include="native" />
-        <dependency id="libortki-osx" version="0.0.3" include="native" />
-        <dependency id="libortki-osx-arm64" version="0.0.3" include="native" />
-        <dependency id="libortki-linux" version="0.0.3" include="native" />
-      </group>
-    </dependencies>
   </metadata>
 
+  <!-- One package with the native library of every supported platform (no per-platform dependency packages).
+       Before packing, install must hold both builds: install/bin/ortki.dll (Windows) and install/lib/libortki.so
+       (Linux, copied from the Linux build). osx / osx-arm64 are not built. -->
   <files>
+    <file src="../../install/bin/ortki.dll" target="runtimes/win-x64/native"/>
+    <file src="../../install/lib/libortki.so" target="runtimes/linux-x64/native"/>
     <!-- A dummy reference which prevents NuGet from adding any compilation references when this package is imported -->
-    <file src="_._" target="lib\netstandard2.0" />
+    <file src="_._" target="lib/netstandard2.0" />
   </files>
 </package>
