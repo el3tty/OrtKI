@@ -55,6 +55,15 @@ internal partial class Native
     [DllImport(LibraryName)]
     private static extern IntPtr ortki_get_last_error();
 
+    [DllImport(LibraryName)]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static extern bool ortki_parse_onnx_text([MarshalAs(UnmanagedType.LPUTF8Str)] string text, out IntPtr model, out nuint size);
+
+    [DllImport(LibraryName)]
+    public static extern void ortki_free_buffer(IntPtr buffer);
+
+    public static string LastError => Marshal.PtrToStringUTF8(ortki_get_last_error()) ?? "unknown ortki error";
+
     /// <summary>
     /// Operators return a null handle on failure; turn that into an <see cref="OrtKIException"/>.
     /// </summary>
@@ -63,7 +72,7 @@ internal partial class Native
     {
         if (result.IsInvalid)
         {
-            throw new OrtKIException(Marshal.PtrToStringUTF8(ortki_get_last_error()) ?? "unknown ortki error");
+            throw new OrtKIException(LastError);
         }
 
         return result;

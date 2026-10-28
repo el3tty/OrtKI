@@ -11,11 +11,14 @@ set(SRCS
         src/default_providers.cpp
         src/environment.cpp
         src/c_api.cpp
+        src/onnx_text.cpp
         src/operators.cpp
         src/operators_patch.cpp
         src/util.cpp)
 
 add_library(ortki ${SRCS})
+# onnx is linked statically: its ONNX_API must not be dllimport
+set_source_files_properties(src/onnx_text.cpp PROPERTIES COMPILE_DEFINITIONS ONNX_API=)
 
 add_compile_definitions(ONNX_ML=1)
 add_compile_definitions(ONNX_NAMESPACE=onnx)

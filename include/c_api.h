@@ -118,6 +118,11 @@ ORTKI_API(void) op_executor_dispose(ortki::OpExecutor* executor);
 // Message of the last failed operator call on this thread (operators return nullptr on failure).
 ORTKI_API(const char*) ortki_get_last_error();
 
+// Parses a model in the ONNX textual syntax (onnx/defs/parser.h) into a serialized ModelProto.
+// On success *model is a buffer to release with ortki_free_buffer; on failure returns false and sets the last error.
+ORTKI_API(bool) ortki_parse_onnx_text(const char* text, uint8_t** model, size_t* size);
+ORTKI_API(void) ortki_free_buffer(uint8_t* buffer);
+
 // Exceptions must not cross the C API, so operator bodies are wrapped in these.
 #define ORTKI_TRY try {
 #define ORTKI_CATCH(ret)                                \

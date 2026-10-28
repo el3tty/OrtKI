@@ -68,6 +68,28 @@ public partial class OrtKI
     // }
     //
 
+    /// <summary>
+    /// Parses a model written in the ONNX textual syntax (onnx/defs/parser.h) and returns the serialized ModelProto.
+    /// </summary>
+    public static byte[] ParseOnnxText(string text)
+    {
+        if (!Native.ortki_parse_onnx_text(text, out var model, out var size))
+        {
+            throw new OrtKIException(Native.LastError);
+        }
+
+        try
+        {
+            var bytes = new byte[(int)size];
+            Marshal.Copy(model, bytes, 0, bytes.Length);
+            return bytes;
+        }
+        finally
+        {
+            Native.ortki_free_buffer(model);
+        }
+    }
+
     public static Tensor Square(Tensor input)
     {
         return Mul(input, input);
