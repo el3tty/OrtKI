@@ -50,8 +50,9 @@ cmake --install build-rel
 On Windows, run the same steps from a Visual Studio 2022 developer shell without the clang and linker options, adding
 `-DONNX_USE_MSVC_STATIC_RUNTIME=OFF -Dprotobuf_MSVC_STATIC_RUNTIME=OFF -DABSL_MSVC_STATIC_RUNTIME=OFF
 -Dgtest_force_shared_crt=ON` to the onnxruntime configure step. Use MSVC 14.42: 14.51 stops on a deprecation warning in
-onnxruntime. The published Windows library also uses local changes to onnxruntime's onnx patch that are not published, so
-this exact build cannot be repeated from public sources.
+onnxruntime. The published Windows library uses onnxruntime 1.27.0 with a backport to its onnx patch of a later upstream fix, for a
+static initialization order crash at start-up. Newer onnxruntime versions have the fix and need no patch, as the Linux
+build shows.
 
 `CSharp/libortki/libortki.nuspec` packs `install/bin/ortki.dll` and `install/lib/libortki.so`, so `install` has to hold both
 builds. A rebuilt package has a different hash, so nncase's lock files need updating with `dotnet restore --force-evaluate`.
